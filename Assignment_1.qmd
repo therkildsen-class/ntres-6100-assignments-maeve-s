@@ -27,9 +27,7 @@ library(knitr)
 
 ## Exercise 1. Corruption and human development
 
-This exercise explores a dataset containing the human development index (`HDI`) and corruption perception index (`CPI`) of 173 countries across 6 different regions around the world: Americas, Asia Pacific, Eastern Europe and Central Asia (`East EU Cemt`), Western Europe (`EU W. Europe`), Middle East and North Africa and Noth Africa (`MENA`), and Sub-Saharan Africa (`SSA`). (Note: the larger `CPI` is, the less corrupted the country is perceived to be.)
-<br>
-<br>
+This exercise explores a dataset containing the human development index (`HDI`) and corruption perception index (`CPI`) of 173 countries across 6 different regions around the world: Americas, Asia Pacific, Eastern Europe and Central Asia (`East EU Cemt`), Western Europe (`EU W. Europe`), Middle East and North Africa and Noth Africa (`MENA`), and Sub-Saharan Africa (`SSA`). (Note: the larger `CPI` is, the less corrupted the country is perceived to be.) <br> <br>
 
 First, we load the data using the following code.
 
@@ -157,7 +155,8 @@ For the following exercise, **transform the data as instructed**. Try to use `ti
 ## Write your code here
 ```
 
-#### 2.6 Find the mean `conc` and sum of the `Dose` received by each test subject. 
+#### 2.6 Find the mean `conc` and sum of the `Dose` received by each test subject.
+
 Show data for the 6 subjects with the smallest sum of `Dose` as below. **Do not define new intermediate objects for this exercise; use pipes to chain together functions**.
 
 ```{r}
@@ -171,6 +170,7 @@ This excercise uses the dataset `economics` from the ggplot2 package. It was pro
 ```{r}
 head(economics) %>% kable()
 ```
+
 <br>
 
 #### 3.1 Plot the trend in number of unemployed persons (`unemploy`) though time using the economics dataset shown above. And for this question only, hide your code and only show the plot.
