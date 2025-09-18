@@ -89,5 +89,3 @@ select(coronavirus, ~province)
 ```
 
 you can index by numbers, but if anyone changes the dataset this code will become useless, so it is smart to avoid it when possible.
-
-Let's make a change on here and see if it does something stupid
