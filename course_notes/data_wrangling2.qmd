@@ -82,7 +82,9 @@ vacc |>
   geom_histogram(mapping = aes(x = average_doses))
 ```
 
-You can also use the filter function after doing other things, including a mutate. We will also be using the arrange() function for the first time. It naturally sorts from low to high, but if you put a minus sign in front of it, it will sort from high to low.
+You can also use the filter function after doing other things, including a mutate. 
+
+We will also be using the arrange() function for the first time. It naturally sorts from low to high, but if you put a minus sign in front of it, it will sort from high to low.
 
 ```{r}
 vacc |>

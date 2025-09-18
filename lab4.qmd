@@ -1,0 +1,61 @@
+---
+title: "Untitled"
+format: github_document
+editor: visual
+---
+
+```{r include=FALSE}
+library(tidyverse)
+#install.packages("dslabs")
+library(dslabs)
+```
+
+```{r}
+gapminder %>% as_tibble() %>% 
+  head(5)
+```
+
+## Question 1
+Which five countries had the largest population size in 2015 (the most recent year for which population sizes are included in this dataset), and how has the population sizes in those countries changes since 1960?
+
+```{r}
+top5_2015pop <- gapminder |>
+  filter(year == "2015") |>
+  arrange(population) |>
+  select(country) |>
+  tail(5)
+```
+
+```{r}
+gapminder %>% 
+  filter(country %in% top5_2015pop$country) %>% 
+  ggplot() +
+  geom_line(mapping = aes(x = year, y = population, color = country))
+```
+
+## Question 2
+Rank the following countries in infant mortality rate in 2015.
+Turkey, Poland, South Korea, Russia, Vietnam, South Africa
+
+```{r}
+gapminder |>
+  filter(country %in% c("Turkey", "Poland", "South Korea", "Vietnam", "South Africa")) |>
+  filter(year == "2015") |>
+  arrange(infant_mortality) |>
+  select(country, infant_mortality)
+```
+## Question 3
+What is the general relationship between per-capita GDP and fertility rate?
+
+```{r}
+
+gapminder |>
+  filter(year == "2000") |>
+  mutate(per_capita_gdp = gdp / population) |>
+  ggplot(aes(x = per_capita_gdp, y = fertility)) +
+  geom_point() +
+  geom_smooth(se=F, method = "lm")
+```
+
+
+
