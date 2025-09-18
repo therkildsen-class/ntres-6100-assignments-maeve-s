@@ -20,6 +20,7 @@ We selected only entries from the US, and then put it into a variable, then sele
 ```{r}
 coronavirus_us <- filter(coronavirus, country == "US")
 coronavirus_us2 <- select(coronavirus_us, -lat, -long, -province)
+coronavirus_us2
 ```
 
 Now, we will try to use the "pipe", which takes the subset from the previous argument and uses it for the next argument, so we don't have to keep saving objects
@@ -30,4 +31,41 @@ coronavirus |>
   select(-lat, -long, -province)
 ```
 
-There is nothing about the pipe that says it has to be on different lines, it just makes it easier to see
+There is nothing about the pipe that says it has to be on different lines, it just makes it easier to see.
+
+```{r}
+coronavirus |>
+  filter(type == "death", country %in% c("US", "Canada", "Mexico")) |>
+  select(country, date, cases) |>
+  ggplot() +
+  geom_line(mapping = aes(x = date, y = cases, color = country))
+```
+
+When to use quotations and when not to? Don't use them when you're calling on variables, only when you're talking about something in the dataset (a string)
+Also, if you have any part of the code highlighted it will only run that part of the code (ex. she had accidentally only highlighted an end parenthesis)
+
+This graph shows you how you can filter and select the data and directly put that data into a plot.
+REMEMBER! Once you move from cleaning data to ggplot you need to use + instead of |>
+
+## Adding extra columns
+
+Now we are going to load a new dataset
+
+```{r}
+vacc <- read_csv("https://raw.githubusercontent.com/RamiKrispin/coronavirus/main/csv/covid19_vaccine.csv")
+```
+If you're in a regular R document, you can use the "Code" menu on the top of your screen to make different sections ("insert section")
+
+We are going to add a new column that shows vaccination rates
+
+```{r}
+vacc |>
+  filter(date == max(date)) |>
+  select(country_region, continent_name, people_at_least_one_dose, population) |>
+  mutate(vaxrate = round(people_at_least_one_dose/population, 2))
+```
+
+We used this argument to find the maximum date in the daatset (unsure about dollar sign)
+```{r}
+max(vacc$date)
+```
