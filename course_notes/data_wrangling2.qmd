@@ -15,6 +15,7 @@ library(skimr)
 ```{r}
 coronavirus <- read_csv('https://raw.githubusercontent.com/RamiKrispin/coronavirus/master/csv/coronavirus.csv')
 ```
+
 We selected only entries from the US, and then put it into a variable, then selected that subset of the data by lat, long, and province
 
 ```{r}
@@ -41,11 +42,9 @@ coronavirus |>
   geom_line(mapping = aes(x = date, y = cases, color = country))
 ```
 
-When to use quotations and when not to? Don't use them when you're calling on variables, only when you're talking about something in the dataset (a string)
-Also, if you have any part of the code highlighted it will only run that part of the code (ex. she had accidentally only highlighted an end parenthesis)
+When to use quotations and when not to? Don't use them when you're calling on variables, only when you're talking about something in the dataset (a string) Also, if you have any part of the code highlighted it will only run that part of the code (ex. she had accidentally only highlighted an end parenthesis)
 
-This graph shows you how you can filter and select the data and directly put that data into a plot.
-REMEMBER! Once you move from cleaning data to ggplot you need to use + instead of |>
+This graph shows you how you can filter and select the data and directly put that data into a plot. REMEMBER! Once you move from cleaning data to ggplot you need to use + instead of \|\>
 
 ## Adding extra columns
 
@@ -54,6 +53,7 @@ Now we are going to load a new dataset
 ```{r}
 vacc <- read_csv("https://raw.githubusercontent.com/RamiKrispin/coronavirus/main/csv/covid19_vaccine.csv")
 ```
+
 If you're in a regular R document, you can use the "Code" menu on the top of your screen to make different sections ("insert section")
 
 We are going to add a new column that shows vaccination rates
@@ -66,6 +66,41 @@ vacc |>
 ```
 
 We used this argument to find the maximum date in the daatset (unsure about dollar sign)
+
 ```{r}
 max(vacc$date)
+```
+
+Now we are going to add a new variable that shows how many doses of vaccine on average have been distributed per person who have had at least one dose for each country, and funnel that data into a plot
+
+```{r}
+vacc |>
+  filter(date == max(date)) |>
+  select(country_region, continent_name, people_at_least_one_dose, population, doses_admin) |>
+  mutate(average_doses = doses_admin/people_at_least_one_dose) |>
+  ggplot() +
+  geom_histogram(mapping = aes(x = average_doses))
+```
+
+You can also use the filter function after doing other things, including a mutate. We will also be using the arrange() function for the first time. It naturally sorts from low to high, but if you put a minus sign in front of it, it will sort from high to low.
+
+```{r}
+vacc |>
+  filter(date == max(date)) |>
+  select(country_region, continent_name, people_at_least_one_dose, population, doses_admin) |>
+  mutate(average_doses = doses_admin/people_at_least_one_dose) |>
+  filter(average_doses > 3) |>
+  arrange(average_doses)
+```
+
+The next block of code will show us countries that have a vaccination rate of over 90%
+
+```{r}
+vacc |>
+  filter(date == max(date)) |>
+  select(country_region, continent_name, people_at_least_one_dose, population) |>
+  mutate(vaxrate = people_at_least_one_dose/population) |>
+  filter(vaxrate > 0.9) |>
+  arrange(-vaxrate) |>
+  head(5)
 ```
