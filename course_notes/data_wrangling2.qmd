@@ -1,0 +1,33 @@
+---
+title: "data_wrangling2"
+format: html
+---
+
+```{r include=FALSE}
+library(tidyverse)
+```
+
+```{r include=FALSE}
+#install.packages("skimr")
+library(skimr)
+```
+
+```{r}
+coronavirus <- read_csv('https://raw.githubusercontent.com/RamiKrispin/coronavirus/master/csv/coronavirus.csv')
+```
+We selected only entries from the US, and then put it into a variable, then selected that subset of the data by lat, long, and province
+
+```{r}
+coronavirus_us <- filter(coronavirus, country == "US")
+coronavirus_us2 <- select(coronavirus_us, -lat, -long, -province)
+```
+
+Now, we will try to use the "pipe", which takes the subset from the previous argument and uses it for the next argument, so we don't have to keep saving objects
+
+```{r}
+coronavirus |>
+  filter(country == "US") |>
+  select(-lat, -long, -province)
+```
+
+There is nothing about the pipe that says it has to be on different lines, it just makes it easier to see
