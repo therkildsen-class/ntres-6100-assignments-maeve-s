@@ -3,3 +3,120 @@ title: "ggplot_pt2"
 format: html
 editor: visual
 ---
+
+``` {r}
+library(tidyverse)
+library(skimr)
+coronavirus <- read_csv('https://raw.githubusercontent.com/RamiKrispin/coronavirus/master/csv/coronavirus.csv')
+```
+
+If you're working in a regular r script, you can use the "Code" menu at the top of the screen and pick "new section" to break up your file so its more easily readable.
+
+First, we're going to learn how to use the summarize() function. You use it by using a name, = then use a function (like sum() or mean()) to bring up a single stat from the dataset you give the summarize() function. In this example, we filter the data first before summarizing.
+
+You can also use the group.by() function to get multiple stats for each entry in a column of the dataset. We then used the arrange() function, calling on the variable we made in the summarize() function to sort the countries by total confirmed cases from high to low.
+
+Also, the shortcut for the pipe symbol is command + shift + m
+
+``` {r}
+coronavirus |> 
+  filter(type == "confirmed") |> 
+  group_by(country) |> 
+  summarize(total = sum(cases),
+            n = n()) |> 
+  arrange(-total)
+```
+
+
+
+``` {r}
+coronavirus |> 
+  group_by(date, type) |> 
+  summarize(total = sum(cases)) |> 
+  filter(date == "2023-01-01")
+```
+
+## Exercise 5
+Which day has had the highest total death count globally in this dataset?
+
+``` {r}
+coronavirus |> 
+  filter(type == "death") |> 
+  group_by(date) |> 
+  summarize(total = sum(cases)) |> 
+  arrange(-total)
+```
+
+After finishing this exercise, we tried to use the filter() function after the summarize(), but we didn't group by type so the veriable we were trying to filter by no longer existed
+
+Next exercise: total cofirmed cases for each date. We assigned it to a variable (gg_base) to make it easier to play around with ggplot
+
+``` {r}
+gg_base <- coronavirus |> 
+  filter(type == "confirmed") |> 
+  group_by(date) |> 
+  summarize(cases = sum(cases)) |> 
+  ggplot(mapping = aes(x = date, y = cases))
+```
+
+We tried mapping this filtered data in multiple different kinds of charts. we used geom_col, geom_line, geom_point, and geom_area, we also played around with colors on the graphs
+
+``` {r}
+gg_base +
+  geom_area(color = "red", fill = "red")
+```
+
+``` {r}
+gg_base +
+  geom_line(color = "purple",
+  linetype = "dashed")
+```
+
+We played around with different functions in ggplot, we learned how to use the theme() function, and all of the options we have within that function.
+
+``` {r}
+gg_base +
+  geom_point(mapping = aes(size = cases, color = cases),
+  alpha = 0.4) +
+  theme_minimal() +
+  theme(legend.background = element_rect(
+    fill = "lemonchiffon", 
+    color = "grey50",
+    linewidth = 1
+  ))
+```
+``` {r}
+gg_base +
+  geom_point(mapping = aes(size = cases, color = cases),
+  alpha = 0.4) +
+  theme_minimal() +
+  labs(
+    x = "Date",
+    y = "Total confirmed cases",
+    title = str_c("Daily counts of new coronavirus cases ", max(coronavirus$date)),
+    subtitle = "Global sums"
+  )
+```
+
+Keep in mind when you're adding text to graphs in R, you might not want to put things in the text that may change in the dataset later (like adding dates in a title). You can code these things into the graph, like how we used str_c() to add the latest date in the dataset. We also put a space at the end of the title in quotation marks to make a space before the date.
+
+Next, we wanted to try making a plot with a different line for all the countries of the total cases per day. This was wayyyyy too many lines/things in the legend, so we tried to make an object to select out the top 5 countries 
+
+``` {r}
+top_5 <- coronavirus |> 
+  filter(type == "confirmed") |> 
+  group_by(country) |> 
+  summarize(total = sum(cases)) |> 
+  arrange(-total) |> 
+  head(5) |> 
+  pull(country)
+```
+
+``` {r}
+coronavirus |> 
+  filter(type == "confirmed") |> 
+  group_by(date, country) |> 
+  summarize(total = sum(cases)) |> 
+  ggplot() +
+  geom_line(mapping = aes(x = date, y = total, color = country))
+```
