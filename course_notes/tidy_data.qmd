@@ -3,3 +3,8 @@ title: "Tidy Data"
 format: html
 editor: visual
 ---
+```{r}
+library(tidyverse)
+library(skimr)
+coronavirus <- read_csv('https://raw.githubusercontent.com/RamiKrispin/coronavirus/master/csv/coronavirus.csv')
+```
