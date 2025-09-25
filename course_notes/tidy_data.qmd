@@ -3,8 +3,116 @@ title: "Tidy Data"
 format: html
 editor: visual
 ---
+
 ```{r}
 library(tidyverse)
-library(skimr)
-coronavirus <- read_csv('https://raw.githubusercontent.com/RamiKrispin/coronavirus/master/csv/coronavirus.csv')
+```
+
+What does tidy data mean?
+
+-   A standard way of formatting data
+
+-   Each variable forms a column
+
+-   Each observation forms a row
+
+-   Each value is a cell, and each cell is a single value
+
+This means that all "tidy" datasets are alike, and we can use standardized tools to deal with them, rather than data in all different formats that you need to treat differently. It's more efficient: otherwise you'll need to customize approaches for each dataset, reinvent the wheel every time. Easier to work with collaborators, we can use well-validated tools that are easy to understand. Putting in the initial effort yields great benefits.
+
+First exercise: which table is in tidy format?
+
+### Table 1
+
+```{r, echo=FALSE}
+table1
+```
+
+### Table 2
+
+```{r, echo=FALSE}
+table2
+```
+
+### Table 3
+
+```{r, echo=FALSE}
+table3
+```
+
+### Table 4a
+
+```{r, echo=FALSE}
+table4a
+```
+
+### Table 4b
+
+```{r, echo=FALSE}
+table4b
+```
+
+**Answer:** table 1
+
+Now, we want to find the cases per 10,000 people from table1 (and do some other analysis stuff as well)
+
+```{r}
+table1 |> 
+  mutate(rate = cases / population * 10000)
+```
+
+```{r}
+table1 |> 
+  group_by(year) |> 
+  summarize(total = sum(cases))
+```
+
+```{r}
+table1 |> 
+  ggplot(mapping = aes(x = year, y = cases)) +
+  geom_line(c(`))
+```
+
+Now, we are going to try to compute the rate for the other tables. In table2, the population and cases are in separate rows for all the countries, and in 4a/4b the population and cases are separated into different tables.
+
+## Common Issues
+
+-   One variable might be split into different columns
+
+Here, we are going to be taking tables 4a and 4b and putting them into a more "tidy" format using the pivot_longer() function.
+
+```{r}
+table4a |> 
+  pivot_longer(c(`1999`, `2000`), names_to = "year", values_to = "cases")
+```
+
+```{r}
+table4b |> 
+  pivot_longer(c(`1999`, `2000`), names_to = "year", values_to = "population")
+```
+
+Now, we are taking table 2 and putting it into "tidy" format using the picot_wider function.
+
+```{r}
+table2 |> 
+  pivot_wider(names_from = type, values_from = count)
+```
+
+Now, we are going to tidy table 3 using the separate() function.
+
+```{r}
+table3 |> 
+  separate(rate, into = c("cases", "population"), sep = "/", convert = TRUE)
+```
+
+You can also separate using the position of the characters.
+
+```{r}
+table5 <- table3 |> 
+  separate(year, into = c("century", "year"), sep = 2)
+```
+
+```{r}
+table5 |> 
+  unite(fullyear, century, year, sep = "")
 ```
