@@ -6,6 +6,9 @@ editor: visual
 ```{r}
 library(tidyverse)
 ```
+```{r}
+library(googlesheets4)
+```
 
 ```{r}
 lotr <- read_csv("https://raw.githubusercontent.com/jennybc/lotr-tidy/master/data/lotr_tidy.csv")
@@ -18,7 +21,43 @@ write_csv(lotr, file = "lotr.csv")
 We are going to read the file from our personal computer now, there are two ways, you could either call by doing it by working directory or you could put the whole path on your computer (computer path will not work for other people)
 
 ```{r}
-lotr <- read_csv("./data/lotr.csv")
+write_csv("./data/lotr.csv")
 ```
 
 It's best not to change the data itself, just tell the computer what to ignore in the data.
+
+Now we're going to read in a google sheets document, and then alter the way R reads it so that it reflects what the data actually looks like.
+
+```{r}
+gs4_deauth()
+lotr_google <- read_sheet("https://docs.google.com/spreadsheets/d/1X98JobRtA3JGBFacs_JSjiX-4DPQ0vZYtNl_ozqF6IE/edit#gid=754443596", sheet = "deaths", range = "A5:F15")
+```
+
+```{r}
+lotr_google
+```
+
+Now, we are going to fix the variable names so that they are easier to work with.
+
+```{r}
+install.packages("janitor")
+library(janitor)
+```
+
+```{r}
+msa <- read_tsv("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/main/datasets/janitor_mymsa_subset.txt")
+```
+
+```{r}
+colnames(msa_clean)
+```
+
+```{r}
+msa_clean <- clean_names(msa)
+```
+
+Next, we are going to parse the data. parse_number() removes anything that isn't a numerical character.
+
+```{r}
+parse_number("$100")
+```
