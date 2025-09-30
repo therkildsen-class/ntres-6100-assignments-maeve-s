@@ -21,7 +21,8 @@ write_csv(lotr, file = "lotr.csv")
 We are going to read the file from our personal computer now, there are two ways, you could either call by doing it by working directory or you could put the whole path on your computer (computer path will not work for other people)
 
 ```{r}
-write_csv("./data/lotr.csv")
+setwd("/Users/maevestaab/Coding/ntres-6100-assignments-maeve-s")
+write_csv(lotr, "data/lotr.csv")
 ```
 
 It's best not to change the data itself, just tell the computer what to ignore in the data.
@@ -57,6 +58,7 @@ msa_clean <- clean_names(msa)
 ```
 
 Next, we are going to parse the data. parse_number() removes anything that isn't a numerical character.
+
 
 ```{r}
 parse_number("$100")
