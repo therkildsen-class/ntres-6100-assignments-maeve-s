@@ -3,9 +3,11 @@ title: "Data import, export, conversion"
 format: html
 editor: visual
 ---
+
 ```{r}
 library(tidyverse)
 ```
+
 ```{r}
 library(googlesheets4)
 ```
@@ -58,7 +60,6 @@ msa_clean <- clean_names(msa)
 ```
 
 Next, we are going to parse the data. parse_number() removes anything that isn't a numerical character.
-
 
 ```{r}
 parse_number("$100")
