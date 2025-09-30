@@ -116,3 +116,45 @@ table5 <- table3 |>
 table5 |> 
   unite(fullyear, century, year, sep = "")
 ```
+
+Now we are taking another look at the coronavirus dataset
+
+```{r}
+coronavirus <- read_csv('https://raw.githubusercontent.com/RamiKrispin/coronavirus/master/csv/coronavirus.csv')
+```
+
+First, we will try to make a plot with separate colors for all the case types
+
+```{r}
+coronavirus |> 
+  filter(country == "US", cases >= 0) |> 
+  ggplot() +
+  geom_line(aes(x = date, y = cases, color = type))
+```
+
+Now, we will try to use cleaning to make that easier.
+
+```{r}
+coronavirus |> 
+  pivot_wider(names_from = type, values_from = cases)
+```
+
+And now we're going to try to make that plot again. It is much harder this time, because instead of just being a single variable with an aesthetic, we now need to call on 3 different variables. In this case, it makes more sense to pivot_longer() to make it easier. But, if you wanted to have confirmed cases and deaths on the x and y variables, it makes sense to separate them in this way.
+
+```{r}
+corona_wide <- coronavirus |>
+  pivot_wider(names_from = type, values_from = cases)
+```
+
+```{r}
+coronavirus_ttd <- coronavirus |> 
+  group_by(country, type) |>
+  summarize(total_cases = sum(cases)) |>
+  pivot_wider(names_from = type, values_from = total_cases)
+
+# Now we can plot this easily
+ggplot(coronavirus_ttd) +
+  geom_label(mapping = aes(x = confirmed, y = death, label = country))
+```
+
+

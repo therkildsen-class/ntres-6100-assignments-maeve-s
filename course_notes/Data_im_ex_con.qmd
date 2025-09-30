@@ -1,0 +1,24 @@
+---
+title: "Data import, export, conversion"
+format: html
+editor: visual
+---
+```{r}
+library(tidyverse)
+```
+
+```{r}
+lotr <- read_csv("https://raw.githubusercontent.com/jennybc/lotr-tidy/master/data/lotr_tidy.csv")
+```
+
+```{r}
+write_csv(lotr, file = "lotr.csv")
+```
+
+We are going to read the file from our personal computer now, there are two ways, you could either call by doing it by working directory or you could put the whole path on your computer (computer path will not work for other people)
+
+```{r}
+lotr <- read_csv("./data/lotr.csv")
+```
+
+It's best not to change the data itself, just tell the computer what to ignore in the data.
