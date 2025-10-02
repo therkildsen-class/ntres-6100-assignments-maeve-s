@@ -1,0 +1,139 @@
+---
+title: "Relational data"
+format: html
+editor: visual
+---
+
+## Row Binding
+
+First, talking about a case where we have data for the same variables, but they're split into different data sources.
+
+```{r}
+library(tidyverse)
+fship <- read_csv("https://raw.githubusercontent.com/jennybc/lotr-tidy/master/data/The_Fellowship_Of_The_Ring.csv")
+
+ttow <- read_csv("https://raw.githubusercontent.com/jennybc/lotr-tidy/master/data/The_Two_Towers.csv")
+
+rking <- read_csv("https://raw.githubusercontent.com/jennybc/lotr-tidy/master/data/The_Return_Of_The_King.csv")
+```
+
+```{r}
+lotr <- bind_rows(fship, ttow, rking)
+lotr
+```
+
+```{r}
+fship_no_female <- fship |> 
+  select(Male, Film, Race)
+```
+
+In bind_rows, the automatic behavior is to take the formatting of the first dataset youspecify. You can count on it keeping data in the same order and not reshuffling it when it puts them together. In general, it is not a good idea to add columns to dataframes in this kind of way. the widening function we used before and mutate function are better for adding columns, more reliable.
+
+```{r}
+bind_rows(fship_no_female, ttow, rking)
+```
+
+There are two types of join functions, mutating joins and ??? joins. There are also different kinds of keys ???
+
+```{r}
+#install.packages("nycflights13")
+library(nycflights13)
+```
+
+```{r}
+flights
+view(flights)
+```
+
+```{r}
+airlines
+```
+
+```{r}
+airports
+```
+
+Here, we are checking that a key we are using is actually unique to all data in the set.
+
+```{r}
+planes |> 
+  count(tailnum) |>  #works as a kind of summarise function. Gives the count for each of the unique values of a variable
+  filter(n > 1)
+```
+```{r}
+weather |> 
+  count(time_hour, origin) |> 
+  filter(n > 1)
+```
+
+Now, we are checking to see if there is any missing data in the dataset:
+
+```{r}
+planes |> 
+  filter(is.na(tailnum))
+```
+
+It returns 0, which tells us that there is no missing data in this set.
+
+Now, we are going to subset the flights data to make it easier to work with. We are going to pull the airline codes with a left join. Left join will be used in the vast majority of cases. In a left joi, all of the data in the original dataframe will be kept unchanged, it will only be added to.
+
+```{r}
+flights2 <- flights |> 
+  select(year:day, hour, origin, dest, tailnum, carrier)
+flights2
+```
+```{r}
+flights2 |> 
+  left_join(airlines)
+```
+Now we are going to try to pull in the weather data. In this case, it joined by all of the variables to make sure it lined up with the original data.
+
+```{r}
+flights2 |> 
+  left_join(weather)
+```
+Now we are going to add information about the planes doing the flights. When you do this, you get a bunch of NAs, because it tried to join by both year and tail number. We only wanted it to join by tail number. The two dataframes both have hte variable "year", but they mean two different things in the different dataframes, so they were incompatible when you try to join based on the two variables. You want to specify that you don't want to do a natural join (anything in common), but pick specific variables to join by. BUT, now we have two year variables when we join, so we need to add a parameter to tell the reader which data the year refers to
+
+```{r}
+flights2 |> 
+  left_join(planes, join_by(tailnum), suffix = c("_flights", "_planes"))
+```
+What about cases where the variable names don't match, but we know the values match?
+
+```{r}
+flights2 |> 
+  left_join(airports, join_by(origin == faa))
+```
+Exercise: Add location of both origin and destination (ex. lat/long) to flights
+
+```{r}
+airports2 <- airports |> 
+  select(faa, name, lat, lon)
+airports2
+```
+```{r}
+flights2 |> 
+  left_join(airports2, join_by(origin == faa)) |> 
+  left_join(airports2, join_by(dest == faa), suffix = c("_origin", "_dest"))
+```
+
+
+
+
+
+
+An aside about code style: it is important to develop a consistent style. Some key things:
+
+-   Naming things (like snake case, avoid spaces)
+
+-   Use nouns to update/describe new things, verbs when you are doing something to the data
+
+-   put spaces on either side of mathematical operators: makes code more readable. Spaces before but not after parentheses
+
+-   put spaces after commas
+
+-   put each step on a separate line whenever you can (even within a function, if you are doing multiple things you can put them on different lines in the same parenthesis
+
+-   pipes should have a space before them and should be the last thing on a line
+
+-   In ggplot, ex. making a new line whenever you add a layer

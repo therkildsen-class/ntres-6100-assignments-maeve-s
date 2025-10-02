@@ -156,5 +156,3 @@ coronavirus_ttd <- coronavirus |>
 ggplot(coronavirus_ttd) +
   geom_label(mapping = aes(x = confirmed, y = death, label = country))
 ```
-
-
