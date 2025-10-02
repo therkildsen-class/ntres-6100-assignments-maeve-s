@@ -1,6 +1,6 @@
 ---
 title: "Assignment 5: Data transformation and visualization - Part 2"
-format: html
+format: gfm
 editor: visual
 ---
 
