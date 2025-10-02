@@ -70,7 +70,7 @@ housing |>
 | South  | DC    |     361999 | 2004.00 |
 | South  | DC    |     382792 | 2004.25 |
 
-Answer: 153 records. <br>
+Answer: 153 records. <br><br>
 
 **1.2 Generate a tibble/dataframe that summarizes the mean land value of
 each region at each time point and show its first 6 lines.**
@@ -95,7 +95,7 @@ housing |>
 | Midwest | 1976.25 |        2967.333 |
 | Midwest | 1976.50 |        3212.833 |
 
-<br>
+<br><br>
 
 **1.3 Using the tibble/dataframe from 1.2, plot the trend in mean land
 value of each region through time.**
@@ -138,7 +138,7 @@ gapminder |>
 | Afghanistan | Asia      | 1972 |  36.088 | 13079460 |  739.9811 |
 | Afghanistan | Asia      | 1977 |  38.438 | 14880372 |  786.1134 |
 
-<br>
+<br><br>
 
 **2.1 Use a scatterplot to explore the relationship between per capita
 GDP (gdpPercap) and life expectancy (lifeExp) in the year 2007.**
@@ -152,7 +152,7 @@ gapminder |>
 
 ![](assignment_5_files/figure-commonmark/unnamed-chunk-8-1.png)
 
-<br>
+<br><br>
 
 **2.2 Add a smoothing line to the previous plot.**
 
@@ -166,7 +166,7 @@ gapminder |>
 
 ![](assignment_5_files/figure-commonmark/unnamed-chunk-9-1.png)
 
-<br>
+<br><br>
 
 **2.3 Exclude Oceania from the previous plot, show each continent in a
 different color, and fit a separate smoothing line to each continent to
