@@ -11,7 +11,7 @@ library(tidyverse)
 library(knitr)
 ```
 
-**Exercise 1. Tibble and Data Import**
+## **Exercise 1. Tibble and Data Import**
 
 Import the data frames listed below into R and [parse](https://r4ds.had.co.nz/data-import.html#parsing-a-vector) the columns appropriately when needed. Watch out for the formatting oddities of each dataset. Print the results directly, **without** using `kable()`.
 

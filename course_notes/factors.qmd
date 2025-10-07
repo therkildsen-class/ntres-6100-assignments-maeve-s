@@ -1,0 +1,160 @@
+---
+title: "Factors"
+format: html
+editor: visual
+---
+
+Categorical variables that have a fixed and known set of possible values, levels are ordered
+
+They have human readable names, but R is really storing integer codes
+
+Useful for modeling, but also when you want to display character vectors in a non-alphabetical order
+
+```{r}
+library(tidyverse)
+```
+
+First we are going to create the variables we need
+
+```{r}
+x1 <- c("Dec", "Apr", "Jan", "Mar")
+```
+
+```{r}
+x2 <- c("Dec", "Apr", "Jam", "Mar")
+```
+
+Now we are defining the "levels" or the way we want things to be ordered
+
+```{r}
+month_levels <- c(
+  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+)
+```
+
+This shows how it orders these strings even though they're not all there
+
+```{r}
+y1 <- factor(x1, levels = month_levels)
+y1
+```
+
+This shows that when you have one thats not in the level definition it will insert an NA
+
+```{r}
+y2 <- factor(x2, levels = month_levels)
+y2
+```
+
+## Factors in Plotting
+
+```{r}
+library(gapminder)
+```
+
+In this dataset, country and continent are saved as factors. Each of these functions are ways to get information about a factor variable and what the levels are.
+
+```{r}
+str(gapminder$continent)
+levels(gapminder$continent)
+nlevels(gapminder$continent)
+```
+
+```{r}
+gapminder |> 
+  count(continent)
+```
+
+```{r}
+nlevels(gapminder$country)
+```
+
+
+```{r}
+h_countries <- c("Egypt", "Haiti", "Romania", "Thailand", "Venezuela")
+```
+
+```{r}
+h_gap <- gapminder |> 
+  filter(country %in% h_countries)
+h_gap |> 
+  count(country)
+```
+Even though we ust filtered the daataset, the number of levels stays the same. Most of the time that won't be a problem, ex. ggplot will just ignore unused levels. But if you want to remove unused levels:
+
+```{r}
+h_gap_dropped <- h_gap |> 
+  droplevels()
+nlevels(h_gap_dropped$country)
+```
+
+Exercise:
+
+Filter the gapminder data down to rows where population is less than a quarter of a million (250,000). Get rid of the unused factor levels for country and continent in different ways (droplevels(), fct_drop() inside mutate())
+
+```{r}
+small_countries <- gapminder |> 
+  filter(pop < 250000)
+small_countries |> 
+  count(country) |> 
+  droplevels()
+```
+
+```{r}
+small_countries <- gapminder |> 
+  filter(pop < 250000) |> 
+  mutate(country = fct_drop(country))
+nlevels(small_countries$country)
+```
+
+```{r}
+levels(gapminder$continent)
+```
+
+We can sort by the frequency: we are resorting the levels to be from least frequent to most frequent they are in the dataset
+
+```{r}
+gapminder$continent |> 
+  fct_infreq() |> 
+  levels()
+```
+
+We are going to try to graph information in a factor variable, doing things to it before graphing.
+
+```{r}
+p1 <- gapminder |> 
+  ggplot(aes(x = continent)) +
+  geom_bar() +
+  coord_flip()
+p1
+```
+
+```{r}
+p2 <- gapminder |> 
+  ggplot(aes(x = fct_infreq(continent))) +
+  geom_bar() +
+  coord_flip()
+p2
+```
+You also might want to sort the levels by the values of a different variable.
+
+```{r}
+gap_asia_2007 <- gapminder |> 
+  filter(year == 2007, continent == "Asia")
+gap_asia_2007 |> 
+  ggplot(aes(x = lifeExp, y = country)) +
+  geom_point()
+```
+In this plot, we are doing the same thing as the last one but we are reordering the country variable by life expectancy.
+
+```{r}
+gap_asia_2007 |> 
+  ggplot(aes(x = lifeExp, y = fct_reorder(country, lifeExp))) +
+  geom_point()
+```
+
+
+
+
+

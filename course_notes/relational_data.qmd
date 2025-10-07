@@ -33,7 +33,7 @@ In bind_rows, the automatic behavior is to take the formatting of the first data
 bind_rows(fship_no_female, ttow, rking)
 ```
 
-There are two types of join functions, mutating joins and ??? joins. There are also different kinds of keys ???
+There are two types of join functions, mutating joins and natural joins. There are also different kinds of keys ???
 
 ```{r}
 #install.packages("nycflights13")
@@ -60,6 +60,7 @@ planes |>
   count(tailnum) |>  #works as a kind of summarise function. Gives the count for each of the unique values of a variable
   filter(n > 1)
 ```
+
 ```{r}
 weather |> 
   count(time_hour, origin) |> 
@@ -82,28 +83,33 @@ flights2 <- flights |>
   select(year:day, hour, origin, dest, tailnum, carrier)
 flights2
 ```
+
 ```{r}
 flights2 |> 
   left_join(airlines)
 ```
+
 Now we are going to try to pull in the weather data. In this case, it joined by all of the variables to make sure it lined up with the original data.
 
 ```{r}
 flights2 |> 
   left_join(weather)
 ```
+
 Now we are going to add information about the planes doing the flights. When you do this, you get a bunch of NAs, because it tried to join by both year and tail number. We only wanted it to join by tail number. The two dataframes both have hte variable "year", but they mean two different things in the different dataframes, so they were incompatible when you try to join based on the two variables. You want to specify that you don't want to do a natural join (anything in common), but pick specific variables to join by. BUT, now we have two year variables when we join, so we need to add a parameter to tell the reader which data the year refers to
 
 ```{r}
 flights2 |> 
   left_join(planes, join_by(tailnum), suffix = c("_flights", "_planes"))
 ```
+
 What about cases where the variable names don't match, but we know the values match?
 
 ```{r}
 flights2 |> 
   left_join(airports, join_by(origin == faa))
 ```
+
 Exercise: Add location of both origin and destination (ex. lat/long) to flights
 
 ```{r}
@@ -111,16 +117,69 @@ airports2 <- airports |>
   select(faa, name, lat, lon)
 airports2
 ```
+
 ```{r}
 flights2 |> 
   left_join(airports2, join_by(origin == faa)) |> 
   left_join(airports2, join_by(dest == faa), suffix = c("_origin", "_dest"))
 ```
 
+Key: a variable or set of variables that uniquely identifies an observation
 
+Inner join: only keep what is in common from the two datasets, drop the rest of the data. Can lead to loss of observations: use with caution!
 
+Outer join: either keep all observations in one of the datasets (either the primary or secondary dataframe), or keep all observations in both dataframes.
 
+For majority of cases, you'll want to stick to left joins.
 
+Mutating joins: pulling in extra variables
+
+Filtering joins: don't add any data, but filter the data based on another dataframe
+
+```{r}
+airports |> 
+  semi_join(flights2, join_by(faa == origin))
+```
+
+Anti-join: only brings together what was not the same in two dataframes.
+
+What we are doing here is getting a list of airports not listed in the flights dataframe
+
+```{r}
+flights2 |> 
+  anti_join(airports, join_by(dest == faa)) |> 
+  count(dest)
+```
+
+Exercise: filter flights to only show flights with planes that have flown at least 100 flights (hint: you will need to first use summarize() or count())
+
+```{r}
+planes_gt100 <- flights2 |> 
+  group_by(tailnum) |> 
+  summarize(count = n()) |> 
+  filter(count > 100)
+```
+
+```{r}
+flights |> 
+  semi_join(planes_gt100)
+```
+
+Things that can go weird:
+
+- Typically one-to-many (ex. each flight has one plane, but each plane has many flights)
+
+- Can also be many to many
+
+- Can also be one to one
+
+How to troubleshoot:
+
+- ID variables that are the primary key in each dataframe
+
+- Check that none of the variables in the primary key are missing
+
+- Check the the foreign keys match primary keys in another table (anti_join())
 
 An aside about code style: it is important to develop a consistent style. Some key things:
 
