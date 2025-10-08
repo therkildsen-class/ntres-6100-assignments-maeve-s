@@ -23,7 +23,24 @@ Import the data frames listed below into R and [parse](https://r4ds.had.co.nz/da
 
 `tribble()`:
 
+```{r}
+tribble(
+  ~a, ~b, ~c,
+  #--|--|----
+  1, 2.1, "apple",
+  2, 3.2, "orange"
+)
+```
+
 `tibble()`:
+
+```{r}
+tibble(
+  x = 1:2,
+  y = x + c(1.1, 1.2),
+  z = c("apple", "orange")
+)
+```
 
 ```         
 ```
@@ -32,12 +49,24 @@ Import the data frames listed below into R and [parse](https://r4ds.had.co.nz/da
 
 #### **1.2 Import `https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/dataset2.txt` into R. Change the column names into “Name”, “Weight”, “Price”.**
 
+```{r}
+# dataset2 <- read_delim("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/dataset2.txt", col_names = FALSE)
+dataset2 |> 
+  colnames() <- c("Name", "Weight", "Price")
+dataset2
+```
+
 ```         
 ```
 
 \
 
 #### **1.3 Import `https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/dataset3.txt` into R. Watch out for the first few lines, missing values, separators, quotation marks, and deliminaters.**
+
+```{r}
+dataset3 <- read_delim("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/dataset3.txt", skip = 2, na = c("Not Available", "?"))
+dataset3
+```
 
 ```         
 ```
@@ -64,14 +93,22 @@ This dataset contains the weather and air quality data collected by a weather st
 
 #### **2.1 Variable descriptions**
 
+This dataset contains the weather and air quality data collected by a weather station in Taiwan. It was obtained from the Environmental Protection Administration, Executive Yuan, R.O.C. (Taiwan).
+
 -   The text file `https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/2015y_Weather_Station_notes.txt` contains descriptions of different variables collected by the station.
 
 -   Import it into R and print it in a table as shown below with `kable()`.
 
-`#` indicates invalid value by equipment inspection\
-`*` indicates invalid value by program inspection\
-`x` indicates invalid value by human inspection\
-`NR` indicates no rainfall\
+```{r}
+weather_station_notes <- read_delim("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/2015y_Weather_Station_notes.txt", delim = "-")
+weather_station_notes |> 
+kable()
+```
+
+# indicates invalid value by equipment inspection
+* indicates invalid value by program inspection
+x indicates invalid value by human inspection
+NR indicates no rainfall
 blank indicates no data
 
 \

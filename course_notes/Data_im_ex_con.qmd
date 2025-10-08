@@ -70,6 +70,7 @@ Numbers can be tricky bc people in different parts of the world write numbers in
 ```{r}
 parse_double("1,23", locale = locale(decimal_mark = ","))
 ```
+
 ```{r}
 parse_number("123.456", locale = locale(grouping_mark = "."))
 ```
@@ -86,17 +87,4 @@ R automatically reads NA as a lack of data, but you can specify what values in t
 mess = read_tsv("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/refs/heads/main/datasets/messy_data.tsv", locale = locale(decimal_mark = ","), na = c("Missing", "N/A"))
 ```
 
-Dates are really tricky. There is a section of the R for data science book on dates and times. 
-
-
-
-
-
-
-
-
-
-
-
-
-
+Dates are really tricky. There is a section of the R for data science book on dates and times.
