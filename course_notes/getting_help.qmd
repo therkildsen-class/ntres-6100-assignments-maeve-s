@@ -1,0 +1,116 @@
+---
+title: "Getting Help"
+format: html
+editor: visual
+---
+
+Cornell Statistical Consulting Unit (CSCU)
+
+Help to conceive of specific details of how you're going to measure things: Provide advice to make data analysis easier later. Help with what statistical tests to do, how to do them. Help with writing methods sections, help with reviewers of academic papers.
+
+You can come to them and they won't charge you or your advisor, they charge the department
+
+They do workshops: different topics, different languages/programs
+
+**Where to start?**
+
+-   Teach yourself:
+
+    -   CRAN task views (info about packages, lists of helpful packages by subject area)
+
+    -   package vignettes (tutorial the package author has written, use vignette("package_name"))
+
+    -   Springer Use R! series
+
+    -   CSU workshops
+
+**Your code produced and error?**
+
+-   Debug it yourself (google error messages!)
+
+-   Ask colleagues/local resources (lab mates, CSCU, other Cornell resources like CCSS, Cornell data services
+
+-   Ask strangers (Stack exchange, listservs)
+
+-   Ask ChatGPT (ew)
+
+-   Break it down: break down big problem into small problems, never run huge blocks of code unless you're sure it works, isolate the error, determine cases where the issue occurs, but also maybe cases when things go right
+
+**Debugging**
+
+-   Messages from R (Errors, warnings, messages), can be v unhelpful bc it could be a function within a function within the function you're calling that is the issue
+
+-   If they are functions you wrote: take a step back from writing until you solve it, or start over with defensive programming
+
+-   If they are from a packageL check that all objects passed to the function are as you intend, google, traceback(), RStudio debug mode
+
+-   Avoid big and difficult problems (expect failure, confirm things as you go, program in small steps, spot check intuition at every step)
+
+-   Quick tip: name your variables unique things (ex. not "data", "prob", "mean": these words may be used in deep functions and cause conflicts)
+
+-   Tip: put comments frequently, for complex code sometimes a comment for every line
+
+-   When trying to figure out what is going wrong, after each step add a view() and run it one line at a time (first only the first line, then add the second, etc.)
+
+**Sending Code to Colleagues (small questions)**
+
+-   Save current version of the data so we don't have to reprocess it all
+
+-   Only supply needed code
+
+-   Load packages at top of script
+
+-   Remove everything unrelated to problem (makes it look more approachable, will get dealt with sooner potentially)
+
+-   Use nice formatting, comments
+
+-   Well-named variables
+
+-   Use commenting to show where the issue is
+
+**Sending Code to Colleagues (big questions)**
+
+-   The raw data (ran no software, no processing)
+
+-   tidy dataset and code book
+
+**Asking Strangers**
+
+-   Minimal reproducible example (might not want to hand your data off on the internet, find similar dataset that has the same problem, smaller so easier to handle for person helping you)
+
+-   Minimal runnable code that will reproduce the error
+
+-   Necessary info on used packages, R version, and system it is run on
+
+-   Random process: set.seed() for reproducibility
+
+-   Generate fake data that illustrates your question/issue/problem
+
+-   Make sure users have all infor they need to run your reprex (reprex package in R: will generate error if your code is not self-contained, creates markdown for different issues)
+
+-   Sometimes the act of making this will help you solve your problem: if so, consider posting both the question and the answer on stack overflow so others can benefit
+
+**Naming Variables**
+
+When naming variables, observations, data frames, or files, make them:
+
+1.  Meaningful
+2.  Consistent
+3.  Concise
+4.  Code and coder friendly
+
+**Other Naming Considerations**
+
+-   Avoid object names that are common/used as function names (objects should be nouns, functions should be verbs)
+
+-   Make a name uniquely searchable
+
+-   Keep a clear record of your naming system and plan to forget it
+
+**Types of messages R will print**
+
+Error: something preventing the code from running
+
+Warning: not preventing code from running, but could be a potential problem
+
+Message: Not a mistake or problem, just informative
