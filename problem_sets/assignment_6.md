@@ -1,14 +1,6 @@
 # Assignment 6: Data import and tidy data
 
 
-- To start, first load all the required packages with the following
-  code. Install them if they are not installed yet.
-
-``` r
-library(tidyverse)
-library(knitr)
-```
-
 ## **Exercise 1. Tibble and Data Import**
 
 Import the data frames listed below into R and
@@ -145,11 +137,15 @@ kable()
 | WIND_SPEED | m/sec | Wind speed (The average of last ten minutes per hour) |
 | WS_HR | m/sec | Wind speed (The average of hour) |
 
-# indicates invalid value by equipment inspection
+`#` indicates invalid value by equipment inspection
 
-- indicates invalid value by program inspection x indicates invalid
-  value by human inspection NR indicates no rainfall blank indicates no
-  data
+`*` indicates invalid value by program inspection
+
+`x` indicates invalid value by human inspection
+
+`NR` indicates no rainfall
+
+blank indicates no data
 
   
 

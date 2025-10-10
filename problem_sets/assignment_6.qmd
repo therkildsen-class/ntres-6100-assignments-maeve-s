@@ -6,9 +6,8 @@ editor: visual
 ```{r, include = FALSE}
 knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 ```
--   To start, first load all the required packages with the following code. Install them if they are not installed yet.
 
-```{r}
+```{r, include = FALSE}
 library(tidyverse)
 library(knitr)
 ```
@@ -111,10 +110,14 @@ weather_station_notes |>
 kable()
 ```
 
-# indicates invalid value by equipment inspection
-* indicates invalid value by program inspection
-x indicates invalid value by human inspection
-NR indicates no rainfall
+`#` indicates invalid value by equipment inspection
+
+`*` indicates invalid value by program inspection
+
+`x` indicates invalid value by human inspection
+
+`NR` indicates no rainfall
+
 blank indicates no data
 
 \
