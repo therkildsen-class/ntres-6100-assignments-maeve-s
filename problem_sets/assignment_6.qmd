@@ -3,7 +3,9 @@ title: "Assignment 6: Data import and tidy data"
 format: gfm
 editor: visual
 ---
-
+```{r, include = FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+```
 -   To start, first load all the required packages with the following code. Install them if they are not installed yet.
 
 ```{r}
@@ -50,7 +52,7 @@ tibble(
 #### **1.2 Import `https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/dataset2.txt` into R. Change the column names into “Name”, “Weight”, “Price”.**
 
 ```{r}
-# dataset2 <- read_delim("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/dataset2.txt", col_names = FALSE)
+dataset2 <- read_delim("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/dataset2.txt", col_names = FALSE)
 dataset2 |> 
   colnames() <- c("Name", "Weight", "Price")
 dataset2
@@ -64,9 +66,12 @@ dataset2
 #### **1.3 Import `https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/dataset3.txt` into R. Watch out for the first few lines, missing values, separators, quotation marks, and deliminaters.**
 
 ```{r}
-dataset3 <- read_delim("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/dataset3.txt", skip = 2, na = c("Not Available", "?"))
+# library(janitor)
+dataset3 <- read_delim("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/dataset3.txt", quote = "/", skip = 2, na = c("Not Available", "?"))
 dataset3
+
 ```
+
 
 ```         
 ```
@@ -74,6 +79,7 @@ dataset3
 \
 
 #### **1.4 Import `https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/dataset4.txt` into R. Watch out for comments, units, and decimal marks (which are `,` in this case).**
+
 
 ```         
 ```
@@ -133,12 +139,29 @@ blank indicates no data
 
 Before cleaning:
 
+```{r}
+taiwan_weather <- read_csv("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/2015y_Weather_Station.csv")
+taiwan_weather
+```
+
 ```         
 ```
 
 \
 
 After cleaning:
+
+```{r}
+taiwan_weather_clean <- read_csv("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/2015y_Weather_Station.csv", col_names = TRUE, guess_max = Inf)
+taiwan_weather_clean2 <- taiwan_weather_clean |> 
+  pivot_longer(cols = c("00":"23"), names_to = "hour", values_to = "value") |> 
+  pivot_wider(names_from = item, values_from = value) |> 
+  mutate(date = as.Date(date), across(AMB_TEMP:PM10, as.numeric), hour = hms::as_hms(paste0(hour, ":00:00")))
+
+taiwan_weather_clean2 |> 
+  select(1:10) |> 
+  head()
+```
 
 ```         
 ```
@@ -147,9 +170,24 @@ After cleaning:
 
 #### **2.3 Using this cleaned dataset, plot the daily variation in ambient temperature on September 25, 2015, as shown below.**
 
+```{r}
+taiwan_weather_clean2 |> 
+  filter(date == "2015-09-25") |> 
+  ggplot(aes(x = hour, y = AMB_TEMP)) +
+  geom_line()
+```
+
 \
 
 #### **2.4 Plot the daily average ambient temperature throughout the year with a continuous line, as shown below.**
+
+```{r}
+taiwan_weather_clean2 |> 
+  group_by(date) |> 
+  mutate(daily_average_ambient_temp = mean(AMB_TEMP)) |> 
+  ggplot(aes(x = date, y = daily_average_ambient_temp)) +
+  geom_line()
+```
 
 \
 
@@ -157,11 +195,30 @@ After cleaning:
 
 *Hint: separating date into three columns might be helpful.*
 
+```{r}
+taiwan_weather_clean2 |> 
+  mutate(year = format(date, "%Y"), month = format(date, "%m"), day = format(date, "%d"), RAINFALL = as.numeric(RAINFALL)) |> 
+  group_by(month) |> 
+  summarise(MonthlyRainfall = sum(RAINFALL, na.rm = TRUE)) |> 
+  ggplot(aes(x = month, y = MonthlyRainfall)) +
+  geom_col()
+```
+
 \
 
 #### **2.6 Plot the per hour variation in PM2.5 in the first week of September with a continuous line, as shown below.**
 
 *Hint: uniting the date and hour and parsing the new variable might be helpful.*
+
+```{r}
+taiwan_weather_clean2 |>
+  filter(format(date, "%m") == "09", format(date, "%d") <= "07") |> 
+  mutate(time_str = paste(date, hour), PM2.5 = as.numeric(PM2.5)) |> 
+  mutate(time = parse_datetime(time_str, format = "%Y-%m-%d %H:%M:%S")) |> 
+  ggplot(aes(x = time, y = PM2.5)) +
+  geom_line()
+```
+
 
 \
 
