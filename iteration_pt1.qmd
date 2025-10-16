@@ -1,0 +1,38 @@
+---
+title: "Iterations Part 1"
+format: html
+editor: visual
+---
+
+```{r}
+library(tidyverse)
+library(gapminder)
+```
+
+```{r}
+
+
+```
+
+```{r}
+cntry <- "Afghanistan"
+#country_list <- c("Ireland", "Portugal", "Spain")
+#country_list <- unique(gapminder$country)
+
+#dir.create("figures")
+
+for (cntry in country_list) {
+  
+gap_to_plot <- gapminder |> 
+  filter(country == cntry)
+
+my_plot <- ggplot(gap_to_plot, mapping = aes(x = year, y = gdp_per_cap)) +
+  geom_point() +
+  labs(title = str_c(cntry, "GDP per cap", sep = " "))
+
+ggsave(filename = str_c("figures/", cntry, "_gdp_per_cap.png", sep = ""), plot = my_plot)
+
+}
+```
+
+We made all of these image files, and in case you have a situation like this where you have a lot of outputs you don't want to get pushed to github, you can go to gitignore in your directory and put the folder at the end (we put "figures" in to the bottom of our gitignore file). It might not work for files you have already tracked with github, but you can also put specific files you want to ignore.
