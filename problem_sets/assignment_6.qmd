@@ -3,6 +3,7 @@ title: "Assignment 6: Data import and tidy data"
 format: gfm
 editor: visual
 ---
+
 ```{r, include = FALSE}
 knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 ```
@@ -71,14 +72,12 @@ dataset3
 
 ```
 
-
 ```         
 ```
 
 \
 
 #### **1.4 Import `https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/dataset4.txt` into R. Watch out for comments, units, and decimal marks (which are `,` in this case).**
-
 
 ```         
 ```
@@ -221,7 +220,6 @@ taiwan_weather_clean2 |>
   ggplot(aes(x = time, y = PM2.5)) +
   geom_line()
 ```
-
 
 \
 
