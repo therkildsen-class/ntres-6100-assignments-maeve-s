@@ -10,7 +10,7 @@ library(gapminder)
 ```
 
 ```{r}
-
+view(gapminder)
 
 ```
 
@@ -19,18 +19,27 @@ cntry <- "Afghanistan"
 #country_list <- c("Ireland", "Portugal", "Spain")
 #country_list <- unique(gapminder$country)
 
+gap_europe <- gapminder |> 
+  filter(continent == "Europe") |> 
+  mutate(gdp_tot = gdp_per_cap * pop)
+
+country_list <- unique(gap_europe$country)
+
 #dir.create("figures")
+#dir.create("figures/Europe")
 
 for (cntry in country_list) {
   
-gap_to_plot <- gapminder |> 
+gap_to_plot <- gap_europe |> 
   filter(country == cntry)
 
-my_plot <- ggplot(gap_to_plot, mapping = aes(x = year, y = gdp_per_cap)) +
+my_plot <- ggplot(gap_to_plot, mapping = aes(x = year, y = gdp_tot)) +
   geom_point() +
-  labs(title = str_c(cntry, "GDP per cap", sep = " "))
+  labs(title = str_c(cntry, "GDP", sep = " "))
 
-ggsave(filename = str_c("figures/", cntry, "_gdp_per_cap.png", sep = ""), plot = my_plot)
+print(str_c("Plotting ", cntry))
+
+ggsave(filename = str_c("figures/Europe/", cntry, "_gdp_tot.png", sep = ""), plot = my_plot)
 
 }
 ```

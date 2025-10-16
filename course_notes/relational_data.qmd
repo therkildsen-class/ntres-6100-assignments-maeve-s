@@ -27,7 +27,7 @@ fship_no_female <- fship |>
   select(Male, Film, Race)
 ```
 
-In bind_rows, the automatic behavior is to take the formatting of the first dataset youspecify. You can count on it keeping data in the same order and not reshuffling it when it puts them together. In general, it is not a good idea to add columns to dataframes in this kind of way. the widening function we used before and mutate function are better for adding columns, more reliable.
+In bind_rows, the automatic behavior is to take the formatting of the first dataset you specify. You can count on it keeping data in the same order and not reshuffling it when it puts them together. In general, it is not a good idea to add columns to dataframes in this kind of way. the widening function we used before and mutate function are better for adding columns, more reliable.
 
 ```{r}
 bind_rows(fship_no_female, ttow, rking)
@@ -76,7 +76,7 @@ planes |>
 
 It returns 0, which tells us that there is no missing data in this set.
 
-Now, we are going to subset the flights data to make it easier to work with. We are going to pull the airline codes with a left join. Left join will be used in the vast majority of cases. In a left joi, all of the data in the original dataframe will be kept unchanged, it will only be added to.
+Now, we are going to subset the flights data to make it easier to work with. We are going to pull the airline codes with a left join. Left join will be used in the vast majority of cases. In a left join, all of the data in the original dataframe will be kept unchanged, it will only be added to.
 
 ```{r}
 flights2 <- flights |> 
@@ -167,19 +167,19 @@ flights |>
 
 Things that can go weird:
 
-- Typically one-to-many (ex. each flight has one plane, but each plane has many flights)
+-   Typically one-to-many (ex. each flight has one plane, but each plane has many flights)
 
-- Can also be many to many
+-   Can also be many to many
 
-- Can also be one to one
+-   Can also be one to one
 
 How to troubleshoot:
 
-- ID variables that are the primary key in each dataframe
+-   ID variables that are the primary key in each dataframe
 
-- Check that none of the variables in the primary key are missing
+-   Check that none of the variables in the primary key are missing
 
-- Check the the foreign keys match primary keys in another table (anti_join())
+-   Check the the foreign keys match primary keys in another table (anti_join())
 
 An aside about code style: it is important to develop a consistent style. Some key things:
 
