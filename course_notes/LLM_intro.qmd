@@ -1,0 +1,158 @@
+---
+title: "Intro to LLMs"
+format: html
+editor: visual
+---
+
+### Introduction to LLMs
+
+What is a Large Language Model?
+
+-   AI system trained on vast amounts of text data to understand and generate human language
+
+-   Capabilities include text generation/completion, question answering, language translation, code generation, summarization and analysis
+
+How LLMs Operate
+
+-   Neural networks that take in text and use pattern recognition to predict likely next words based on learned patterns
+
+-   Constantly refining ability to predict patterns
+
+-   3 steps:
+
+1.  input processing
+2.  Pattern Recognition
+3.  Generation
+
+Leading LLM Options
+
+-   ChatGPT
+
+-   Claude (Anthropic)
+
+-   Gemini (Google)
+
+Open Source Options:
+
+-   LLaMA
+
+-   Mistral
+
+-   DeepSeek
+
+Specialized tools:
+
+-   Perplexity: designed to look through data, help with citations, etc.
+
+Prompt Engineering
+
+-   The art/science of designing effective instructions to guide AI models toward desired outputs
+
+-   Parts of a prompt:
+
+    -   Introduction: specific task or instruction you want the model to perform
+
+    -   Context: external info/additional context that can steer the model to better responses
+
+    -   Input data: the input or question you're interested in finding a response for
+
+    -   Output indicator: the type/format of output
+
+-   General guidelines
+
+    -   Start simple: prompts can be build iteratively, can require experimentation, gradually add context/elements, break down large tasks into smaller sub-tasks
+
+    -   Use instruction commands: like "Write", "Classify", "Summarize", "Translate", "Order", etc.
+
+    -   Be specific
+
+    -   Describe what you want the model to do rather than what it should not do
+
+Key Prompting Techniques
+
+-   Zero-shot prompting (give direxct instructions w/o examples
+
+-   Few-shot prompting (Provide examples to demonstrate desired pattern
+
+-   Chain-of-thought (Ask the model to break down problems step-by-step
+
+-   Prompt chaining (iteratively add tasks to refine outputs, especially helpful for coding tasks!)
+
+Risks with LLM Use
+
+-   LLMs are tools to be used in addition to what you are doing, should not be used to "replace" original work
+
+-   LLM's can generate convincing outputs that include made-up information ("hallucinations")
+
+    -   include ground-truth information as context, require citations as part of outputs
+
+-   Bugs in coding tasks
+
+-   Avoid plagiarism!
+
+    -   Do NOT copy and paste LLM outputs, especially for written work
+
+    -   Asses if AI tools are permitted in assignments, attribute AI outputs/contributions if allowed
+
+    -   Try to learn what and why the AI did what it did
+
+Learning Resources:
+
+-   Prompt engineering guide: promptingguide.ai
+
+-   OpenAI Documentation: platform.openai.com
+
+-   Learn prompting: learnprompting.org
+
+### Using AI in RStudio
+
+GitHub Copilot
+
+-   AI-powered tool that aims to make coding simpler for developers
+
+-   Works by auto-filling code, speeding up the manual processes, and highlighting potential errors
+
+-   GitHub copilot provides contextualized advice
+
+ChatGPT
+
+-   AI chatbot that generates human-like texts
+
+Chattr
+
+-   A package that is an interface to LLMs
+
+-   Enables interaction with the model directly from Rstudio
+
+-   Main goal: aid exploratory data analysis tasks
+
+Pricing:
+
+-   GitHub Copilot: new free tier for individual users (limit to 2,000 completions per month)
+
+-   ChatGPT: free account
+
+    -   GPT-4mini (limits on requests)
+
+-   In RStudio: Charge is proportional to the length of the conversation
+
+Setting up GitHub Copilot
+
+1.  Sign in to your GitHub account
+2.  Get a free Copilot subscription
+3.  Open RStudio
+    -   Tools\>Global Options\>Copilot and click "Enable GitHub Copilot"
+
+-   Demonstration: based on the name of an object Jaime was trying to create, the AI predicted what he might want to do with the dataset
+
+-   It was using the old pipe, Jaime fixed it to the new pipe, and in the next section of code the AI had changed its suggestions to use the new pipe instead
+
+When to use Copilot
+
+-   Use for patterns, not decisions
+
+-   boilerplate (reading/writing CSVs, plotting templates, function skeletons), repetitive transformations (mutate chains, grouped summaries), unit patterns (ifelse, etc.)
+
+-   Avoid overtrusting Copilot when data names/column names differ, statistical choices matter, you must explain the code to a teammate
+
+-   Ex. type the comment, then the function name, and pause, copilot will suggest the rest, accept only if you understand it.
