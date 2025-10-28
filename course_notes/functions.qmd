@@ -1,0 +1,182 @@
+---
+title: "Functions"
+format: html
+editor: visual
+---
+
+### Functions
+
+-   Incorporate sets of instructions that we want to use repeatedly, or are so complex that they are better self-contained in a sub-program that can be called as needed: improves readability
+
+-   Can be from other people, or packages, written in the same way as the ones we are going to make today, you can make your own functions (will be simpler than those from the packages we've been using
+
+-   Written to carry out a specified task, can or cannot accept arguments, can or cannot return specified values
+
+-   Automate common tasks in a more powerful and general way than copy-pasting
+
+-   Advantages:
+
+    -   Can give function an evocative name that helps you remember what it does: easier to understand
+
+    -   As requirements change, you only have to change things in one place
+
+    -   Eliminate chance of making errors while repeatedly copy-pasting
+
+-   When should you write a function?
+
+    -   Whenever you've copy-pasted a block of code more than twice
+
+-   Syntax:
+
+```{r}
+function_name <- function(inputs) {
+  output_value <- do_something(input)
+  THIS CODE IS NOT DONE
+}
+```
+
+### Making out first functions
+
+```{r}
+calc_shrub_vol <- function(length, width, height = 1) {
+  area <- length * width
+  volume <- area * height
+  return(volume)
+}
+```
+
+When you define a function, it doesn't give any output, it only gives an output when you run the function. If you don't specify to print out an output, it will not print anything and any objects will no longer be defined outside the function, if you try to call an object in a function outside of it, it will not be found. We specified return(volume). You can only give output from the last thing run in the function.
+
+```{r}
+calc_shrub_vol(0.8, 1.6, 2.0)
+
+
+```
+
+```{r}
+convert_pounds_to_grams <- function(pounds) {
+  grams <- 453.6 * pounds
+  return(grams)
+}
+```
+
+```{r}
+convert_pounds_to_grams(3.75)
+```
+
+You can make the inputs and outputs named whatever you want, as long as you're consistent.You can also specify defaults so you don't always have to give an input. There are also two ways to specify inputs: by position or by label in the function call. Listing the inputs with labels can help with readability, also when you specify the names you can put them in any order.
+
+We changed the calc_shrub_vol function to have a default of 1 for height. This means that you can run the function without giving a heigh input value. BUT you can override this default easily by specifying a different height.
+
+```{r}
+est_shrub_mass <- function(volume) {
+  mass <- 2.65 * volume^0.9
+  return(mass)
+}
+```
+
+```{r}
+shrub_volume <- calc_shrub_vol(0.8, 1.6, 2.0)
+shrub_mass <- est_shrub_mass(shrub_volume)
+shrub_mass
+```
+
+With piping instead:
+
+```{r}
+calc_shrub_vol(0.8, 1.6, 2.0) |> 
+  est_shrub_mass()
+```
+
+```{r}
+est_shrub_mass_from_raw <- function(length, width, height) {
+  volume <- calc_shrub_vol(length, width, height)
+  mass <- est_
+}
+```
+
+3 Key steps for writing a function:
+
+1. Pick a name
+
+2. List inputs/arguments for the function to use
+
+3. Specify what the function does in the body
+
+You can use a consistent prefix for related functions. You can also use commenting out to explain what the function is doing and why.
+
+Names and comments are important for human readers
+
+2 broad sets of arguments:
+
+- Data you're doing computations on
+- Arguments that control the details of a computation
+
+Returning to the for loop we used last week, trying to think of how to use functions to do it instead of just a for loop.
+
+```{r}
+library(tidyverse)
+library(gapminder)
+
+
+#gapminder <- gapminder |> 
+  #rename("life_exp" = lifeExp, "gdp_per_cap" = gdpPercap)
+
+
+est <- read_csv('https://raw.githubusercontent.com/OHI-Science/data-science-training/master/data/countries_estimated.csv')
+gapminder_est <- gapminder |> 
+  left_join(est)
+
+
+cntry <- "Belgium"
+country_list <- c("Albania", "Canada", "Spain")
+
+
+dir.create("figures")
+dir.create("figures/europe")
+
+country_list <- unique(gapminder$country)
+
+gap_europe <- gapminder_est |> 
+  filter(continent == "Europe") |> 
+  mutate(gdp_tot = gdp_per_cap * pop)
+
+country_list <- unique(gap_europe$country)
+
+#cntry <- "Albania"
+
+print_plot <- function(cntry, stat, filetype = "pdf") {
+
+print(str_c("Plotting ", cntry))
+  
+gap_to_plot <- gap_europe |> 
+  filter(country == cntry)
+
+my_plot <- ggplot(data = gap_to_plot, mapping = aes(x = year, y = get(stat))) +
+  geom_point() +
+  labs(title = str_c(cntry, "GDP", sep = " "), 
+       subtitle = ifelse(any(gap_to_plot$estimated == "yes"), "Estimated data", "Reported data"), y = stat)
+
+ggsave(filename = str_c("figures/europe/", cntry, "_", stat, ".", filetype, sep = ""), plot = my_plot)
+
+}
+
+print_plot("Germany", "gdp_per_cap")
+
+for (cntry in country_list) {
+  print_plot(cntry)
+}
+
+```
+
+```{r}
+print_plot("Iceland")
+```
+
+We could also write a for loop with the function to loop through all the countries with the function
+
+
+
+
+
+
