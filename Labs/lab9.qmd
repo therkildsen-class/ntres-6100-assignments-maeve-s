@@ -1,0 +1,92 @@
+---
+title: "Lab 9"
+format: github_document
+editor: visual
+---
+
+```{r}
+library(tidyverse)
+```
+## 1.1
+
+This was my first working attempt at the function:
+
+
+```{r}
+dna_or_rna <- function(sequence) {
+  sequence <- str_split_1(sequence, "")
+  mat_type <- ifelse("u" %in% sequence, "RNA", "DNA")
+  return(mat_type)
+}
+```
+
+
+
+```{r}
+dna_or_rna("gccaau")
+```
+
+Actual version:
+
+```{r}
+dna_or_rna <- function(sequence){
+  bases <- str_split(sequence, pattern = "") %>%
+    unlist() %>%
+    unique()
+  if (all(bases %in% c("a", "t", "g", "c")) & "t" %in% bases){
+    return("DNA")
+    } else if (all(bases %in% c("a", "u", "g", "c")) & "u" %in% bases){
+      return("RNA")
+      } else {
+        return("unknown")
+  }
+ }
+```
+
+
+## 1.2
+
+```{r}
+sequences = c("ttgaatgccttacaactgatcattacacaggcggcatgaagcaaaaatatactgtgaaccaatgcaggcg", 
+              "gauuauuccccacaaagggagugggauuaggagcugcaucauuuacaagagcagaauguuucaaaugcau", 
+              "gaaagcaagaaaaggcaggcgaggaagggaagaagggggggaaacc", 
+              "guuuccuacaguauuugaugagaaugagaguuuacuccuggaagauaauauuagaauguuuacaacugcaccugaucagguggauaaggaagaugaagacu", 
+              "gataaggaagaugaagacutucaggaaucuaauaaaaugcacuccaugaauggauucauguaugggaaucagccggguc")
+
+
+sequence_type <- vector("double", length(sequences))
+for (i in seq_along(sequences)){
+  sequence_type[i] <- dna_or_rna(sequences[i])
+}
+sequence_type
+```
+
+## 1.3
+
+```{r}
+map_chr(sequences, dna_or_rna)
+```
+
+
+## 1.4
+
+
+```{r}
+dna_or_rna <- function(sequence){
+  bases <- str_split(sequence, pattern = "") %>%
+    unlist() %>%
+    unique()
+  if (all(bases %in% c("a", "t", "g", "c")) & "t" %in% bases){
+    return("DNA")
+    } else if (all(bases %in% c("a", "u", "g", "c")) & "u" %in% bases){
+      return("RNA")
+      } else {
+        return("unknown")
+  }
+ }
+```
+
+
+
+
+
