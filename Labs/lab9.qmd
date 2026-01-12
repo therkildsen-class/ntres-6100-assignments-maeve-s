@@ -1,6 +1,6 @@
 ---
 title: "Lab 9"
-format: github_document
+format: gfm
 editor: visual
 ---
 
@@ -30,8 +30,8 @@ Actual version:
 
 ```{r}
 dna_or_rna <- function(sequence){
-  bases <- str_split(sequence, pattern = "") %>%
-    unlist() %>%
+  bases <- str_split(sequence, pattern = "") |> 
+    unlist() |> 
     unique()
   if (all(bases %in% c("a", "t", "g", "c")) & "t" %in% bases){
     return("DNA")
@@ -73,8 +73,9 @@ map_chr(sequences, dna_or_rna)
 
 ```{r}
 dna_or_rna <- function(sequence){
-  bases <- str_split(sequence, pattern = "") %>%
-    unlist() %>%
+  bases <- str_split(sequence, pattern = "") |> 
+    unlist() |> 
+    tolower() |> 
     unique()
   if (all(bases %in% c("a", "t", "g", "c")) & "t" %in% bases){
     return("DNA")
